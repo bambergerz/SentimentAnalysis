@@ -1,6 +1,9 @@
 import sys
-import corpus
-from smoothing import perplexity, simple_smoothing
+
+from corpus_tools.smoothing import perplexity
+
+from corpus_tools import corpus
+from corpus_tools.smoothing import simple_smoothing
 
 DEV_PATH = "../Project1/SentimentDataset/Dev/"
 TEST_PATH = "../Project1/SentimentDataset/Test/"

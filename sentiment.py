@@ -12,7 +12,14 @@ NEGATIVE = "NEGATIVE"
 
 class NaiveBayes:
     def __init__(self, poscorp, negcorp):
+        """
+
+        :param poscorp: The positive corpus. Contains postivie reviews.
+        :param negcorp: The negative corpus. Contains negative reviews.
+        """
         self.vocabsize = len(poscorp.entries) + len(negcorp.entries)
+        self.poscorp = poscorp
+        self.negcord = negcorp
 
         # Initialize priors
         self.num_pos = poscorp.lines
@@ -34,14 +41,27 @@ class NaiveBayes:
                                         (self.vocabsize + negcorp.num_tokens)
 
     def eval(self, review):
+        """
+
+        :param review: A sentence representing a movie review
+        :return: POSITIVE if the movie is deemed to have a positive sentiment. NEGATIVE otherwise.
+        """
         pos_prod = 1
         neg_prod = 1
         for word in review.split():
             print("    word: " + word)
-            print("    pos_likelyhoods[word] = " + str(self.pos_likelyhoods[word]))
-            print("    neg likeyhoods[word] = " + str(self.neg_likelyhoods[word]))
-            pos_prod *= (self.pos_likelyhoods[word])
-            neg_prod *= (self.neg_likelyhoods[word])
+            try:
+                print("    pos_likelyhoods[word] = " + str(self.pos_likelyhoods[word]))
+                pos_prod *= (self.pos_likelyhoods[word])
+            except KeyError as e:
+                print("    pos likelyhoods[word] = 0")
+                pos_prod *= (1 / (self.vocabsize + self.poscorp.num_tokens))
+            try:
+                print("    neg likeyhoods[word] = " + str(self.neg_likelyhoods[word]))
+                neg_prod *= (self.neg_likelyhoods[word])
+            except KeyError as e:
+                print("    neg likelyhoods[word] = 0")
+                neg_prod *= (1 / (self.vocabsize + self.negcord.num_tokens))
             print("    pos prod: " + str(pos_prod))
             print("    neg prod: " + str(neg_prod))
 
@@ -63,7 +83,7 @@ if __name__ == "__main__":
     nb = NaiveBayes(pos_corpus, neg_corpus)
     reviews = ["good movie",
                "not good",
-               # "I thought it was average",
+               "I thought it was average",
                "great actors",
                "good",
                "I liked it !"]

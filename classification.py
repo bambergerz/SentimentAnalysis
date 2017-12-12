@@ -1,6 +1,6 @@
 import sys
 import numpy
-import tensorflow
+# import tensorflow
 
 from corpus_tools.smoothing import perplexity
 

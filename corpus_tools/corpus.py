@@ -13,11 +13,15 @@ class Corpus():
         """
 
         self.name = name
+        self._lines = 0
         #dictionary of token -> corpus_entry instance
         if to_parse:
             self._corpus_entry_dict = self.parser(name + ".txt")
         else:
             self._corpus_entry_dict = {}
+        self.num_tokens = 0
+        for e in self.entries.values():
+            self.num_tokens += e.frequency
 
     def __repr__(self):
         result = "< Corpus object at " + str(hex(id(self))) + ">\n"
@@ -30,6 +34,10 @@ class Corpus():
         :return: the corpus entry dictionary of this Corpus object
         """
         return self._corpus_entry_dict
+
+    @property
+    def lines(self):
+        return self._lines
 
     def set_corpus_entry_dict(self, dict):
         """
@@ -85,6 +93,7 @@ class Corpus():
         
         fileHandle = open(filepath, 'r')
         for line in fileHandle:
+            self._lines += 1
             line = line.rstrip('\n')
             tokens = line.split(' ')
             prev_word = START_TOKEN

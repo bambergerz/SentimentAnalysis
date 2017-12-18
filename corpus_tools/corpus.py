@@ -5,7 +5,8 @@ UNKNOWN_TOKEN = "<UNK>"
 NON_TOKENS = ["'", "`", "''", "``"]
 END_TOKENS = [".", "?", "!"]
 
-class Corpus():
+
+class Corpus:
     def __init__(self, name, to_parse=True):
         """
         
@@ -46,6 +47,19 @@ class Corpus():
         :return: Nothing
         """
         self._corpus_entry_dict = dict
+
+    def add_to_dict(self, key, value):
+        """
+
+        :param key: the key of the item we are adding to the dictionary
+        :param value: the value of the item we are adding to the dictionary
+        :return: True once the (key, value) pair has been added to the dictionary.
+        False if the key is already in the dictionary.
+        """
+        if key in self.entries:
+            return False
+        self._corpus_entry_dict[key] = value
+        return True
 
     def compare_entry_dicts(self, other):
         """
